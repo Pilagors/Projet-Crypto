@@ -1,6 +1,6 @@
 # Guide d'installation pour Tche
 
-## cloner le projet
+## Cloner le projet
 
 `git clone https://github.com/Pilagors/Projet-Crypto.git`  
 `git lfs install`  
