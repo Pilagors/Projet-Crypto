@@ -3,7 +3,9 @@
 ## 1. Cloner le projet
 
 ```bash
-git clone https://github.com/Pilagors/Projet-Crypto.git`  
+git clone https://github.com/Pilagors/Projet-Crypto.git`
+``` 
+```bash 
 git lfs install  
 git lfs pull
 ```
