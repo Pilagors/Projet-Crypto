@@ -6,7 +6,7 @@ class Fichiers:
                 contenu = fichier.read()
             return contenu
         except FileNotFoundError:
-            print("Fichier introuvable.")
+            print(f"Fichier introuvable: {chemin}")
             return None
         
     def ecrire_fichier(self, chemin, contenu):

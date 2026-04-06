@@ -131,6 +131,31 @@ class Solitaire:
             message += self.nombre_vers_lettre(diff)
 
         return message
+
+def chiffrage_fichier(chemin, jeuCarte=None):
+    s = Solitaire(jeuCarte)
+    fichiers = fs.Fichiers()
+
+    message = fichiers.lire_fichier(chemin)
+    if message is not None:
+        message_chiffre = s.chiffrage_final(message)
+        fichiers.ecrire_fichier(chemin + ".crypt", message_chiffre)
+        return message_chiffre
+
+    return None
+
+def dechiffrage_fichier(chemin, jeuCarte=None):
+    s = Solitaire(jeuCarte)
+    fichiers = fs.Fichiers()
+
+    message_chiffre = fichiers.lire_fichier(chemin)
+    if message_chiffre is not None:
+        message_dechiffre = s.dechiffrage_final(message_chiffre)
+        base = chemin.removesuffix(".crypt")
+        fichiers.ecrire_fichier(base + ".decrypt", message_dechiffre)
+        return message_dechiffre
+
+    return None
     
 def tests() :
     print("-> TESTS <-")
@@ -164,24 +189,6 @@ def tests() :
 
     assert dechiffrer2 == "PORTEZCEVIEUXWHISKYAUJUGEBLONDQUIFUME"
     print("Test réussi")
-
-def chiffrage_fichier(chemin):
-    s = Solitaire()
-    fichiers = fs.Fichiers()
-
-    message = fichiers.lire_fichier(chemin)
-    if message is not None:
-        message_chiffre = s.chiffrage_final(message)
-        fichiers.ecrire_fichier(chemin + ".crypt", message_chiffre)
-
-def dechiffrage_fichier(chemin):
-    s = Solitaire()
-    fichiers = fs.Fichiers()
-
-    message_chiffre = fichiers.lire_fichier(chemin + ".crypt")
-    if message_chiffre is not None:
-        message_dechiffre = s.dechiffrage_final(message_chiffre)
-        fichiers.ecrire_fichier(chemin + ".decrypt", message_dechiffre)
 
 if __name__ == "__main__":
     tests()
