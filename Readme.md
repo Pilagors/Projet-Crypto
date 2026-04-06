@@ -1,22 +1,33 @@
 # Guide d'installation pour Tche
 
-## Cloner le projet
+## 1. Cloner le projet
 
-`git clone https://github.com/Pilagors/Projet-Crypto.git`  
-`git lfs install`  
-`git lfs pull`
+```bash
+git clone https://github.com/Pilagors/Projet-Crypto.git`  
+git lfs install  
+git lfs pull
+```
+## 2. Créer le venv
+```bash
+python -m venv .venv
+```
 
-## Créer le venv
-`python -m venv venv` OU `python3 -m venv venv`
+## 3. Lancer l'environnement virtuel
+```bash
+.venv/Scripts/activate
+```
 
-## Lancer l'environnement virtuel
-`venv/Scripts/activate`
+## 4. Installer les dépendances
+```bash
+pip install -r requirements.txt
+```
 
-## Installer les dépendances
-`pip install -r requirements.txt`
+## 5. lancer le projet
+```bash
+python main.py
+```
 
-## lancer le projet
-`python main.py`
-
-## Pour sortir du venv
-`deactivate`
+## 6. Pour sortir du venv
+```bash
+deactivate
+```
