@@ -47,7 +47,7 @@ def carte_vers_chemin(valeur):
                 filename = f"{nom} {n}.png"
                 break
 
-    return os.path.join("../assets/cartes", filename)
+    return os.path.join("assets/cartes", filename)
 
 def carte_vers_label(valeur):
     if valeur == 53:

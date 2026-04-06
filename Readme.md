@@ -16,7 +16,7 @@
 `pip install -r requirements.txt`
 
 ## lancer le projet
-`python src/main.py`
+`python main.py`
 
 ## Pour sortir du venv
 `deactivate`
