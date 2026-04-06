@@ -13,7 +13,7 @@ import os
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
-from src.solitaire import Solitaire
+from src.solitaire import *
 from ui.card_area import CardArea
 from src.mapper import get_cartes
 
@@ -223,7 +223,7 @@ class MainWindow(QMainWindow):
     def browse_file(self):
         path, _ = QFileDialog.getOpenFileName(
             self, "Choisir un fichier texte", "",
-            "Fichiers texte (*.txt *.crypt);;Tous les fichiers (*)"
+            "Fichiers texte (*.txt *.crypt *.decrypt);;Tous les fichiers (*)"
         )
         if path:
             self.selected_file = path
@@ -234,15 +234,26 @@ class MainWindow(QMainWindow):
         if not hasattr(self, "selected_file"):
             self.status.showMessage("Aucun fichier sélectionné !")
             return
+
+        mode = "encrypt" if self.radio_encrypt.isChecked() else "decrypt"
+        path = self.selected_file
+
         try:
-            with open(self.selected_file, "r", encoding="utf-8") as f:
-                content = f.read()
+            if mode == "encrypt":
+                result = chiffrage_fichier(path, self.deck)
+            else:
+                result = dechiffrage_fichier(path, self.deck)
+
+            if result is not None:
+                self.output_text.setPlainText(result)
+                ext = ".crypt" if mode == "encrypt" else ".decrypt"
+                self.status.showMessage("Fichier sauvegardé !")
+            else:
+                self.status.showMessage("Erreur : fichier illisible ou vide.")
+
         except Exception as e:
             self.status.showMessage(f"Erreur lecture : {e}")
             return
-
-        mode = "encrypt" if self.radio_encrypt.isChecked() else "decrypt"
-        self.launch_worker(mode, content, save_to_file=True)
 
     # Worker
 
