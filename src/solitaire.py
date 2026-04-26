@@ -1,4 +1,5 @@
 import re
+import unicodedata
 from src import fichiers as fs
 
 
@@ -16,16 +17,28 @@ class Solitaire:
 
     # UTILS
 
+    def supprimer_accents(self, text):
+        """Supprime les accents des caractères (é -> e, è -> e, à -> a, etc.)"""
+        # Décompose les caractères accentués en base + diacritiques
+        nfd = unicodedata.normalize('NFD', text)
+        # Filtre les diacritiques (combine diacritical marks)
+        return ''.join(char for char in nfd if unicodedata.category(char) != 'Mn')
+
     def nettoyer_message(self, message):
         message = message.upper()
-        message = re.sub(r'[^A-Z]', '', message) # substitution
+        message = self.supprimer_accents(message)  # Supprime les accents
+        message = re.sub(r'[^A-Z ]', '', message) # substitution, garder les espaces
         return message
 
-    def lettre_vers_nombre(self, n):
-        return ord(n) - 64
+    def lettre_vers_nombre(self, car):
+        if car == ' ':
+            return 27
+        return ord(car) - 64
     
-    def nombre_vers_lettre(self, lettre):
-        return chr(lettre + 64)
+    def nombre_vers_lettre(self, nombre):
+        if nombre == 27:
+            return ' '
+        return chr(nombre + 64)
 
     # ETAPES DE MELANGE
     
@@ -102,15 +115,15 @@ class Solitaire:
     def chiffrage_final(self,message):
         message_chiffre =""
         message = self.nettoyer_message(message)
-        for lettre in message :
-            val = self.lettre_vers_nombre(lettre)
+        for car in message :
+            val = self.lettre_vers_nombre(car)
             cle = self.get_keystream_letter()
 
-            print(f"Lettre: {lettre} | Clé générée: {cle}")
+            print(f"Caractère: {repr(car)} | Clé générée: {cle}")
 
             somme = val + cle
-            if somme > 26:
-                somme -= 26
+            if somme > 27:
+                somme -= 27
 
             message_chiffre += self.nombre_vers_lettre(somme)
                 
@@ -120,13 +133,13 @@ class Solitaire:
         message =""
         message_chiffre = self.nettoyer_message(message_chiffre)
 
-        for lettre in message_chiffre :
-            val = self.lettre_vers_nombre(lettre)
+        for car in message_chiffre :
+            val = self.lettre_vers_nombre(car)
             cle = self.get_keystream_letter()
             
             diff = val - cle
             if diff < 1:
-                diff += 26
+                diff += 27
 
             message += self.nombre_vers_lettre(diff)
 
