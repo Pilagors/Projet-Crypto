@@ -19,9 +19,7 @@ class Solitaire:
 
     def supprimer_accents(self, text):
         """Supprime les accents des caractères (é -> e, è -> e, à -> a, etc.)"""
-        # Décompose les caractères accentués en base + diacritiques
         nfd = unicodedata.normalize('NFD', text)
-        # Filtre les diacritiques (combine diacritical marks)
         return ''.join(char for char in nfd if unicodedata.category(char) != 'Mn')
 
     def nettoyer_message(self, message):
